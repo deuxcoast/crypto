@@ -11,14 +11,19 @@ import (
 type App struct {
 	in  io.Reader
 	out io.Writer
+	key int
 }
 
 func main() {
 	var scheme string
 	var output string
+	var decrypt bool
+	var key int
 
 	flag.StringVar(&scheme, "scheme", CAESAR, "The crypto scheme to be used for encryption")
 	flag.StringVar(&output, "output", "", "Where output will be directed")
+	flag.BoolVar(&decrypt, "decrypt", false, "Decrypt the input using specified scheme and key")
+	flag.IntVar(&key, "key", 0, "Key for encryption/decryption")
 	flag.Parse()
 
 	var in io.Reader
@@ -60,4 +65,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	if decrypt {
+		cipher.Decrypt()
+	} else {
+		cipher.Encrypt()
+	}
 }

@@ -28,4 +28,5 @@ func parseScheme(cipher string, app App) (Scheme, error) {
 
 type Scheme interface {
 	Encrypt() error
+	Decrypt() error
 }
