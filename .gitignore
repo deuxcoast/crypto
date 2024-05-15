@@ -1,0 +1,5 @@
+*.o
+
+*.env
+
+test_files

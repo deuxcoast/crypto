@@ -20,7 +20,7 @@ func main() {
 	var decrypt bool
 	var key int
 
-	flag.StringVar(&scheme, "scheme", CAESAR, "The crypto scheme to be used for encryption")
+	flag.StringVar(&scheme, "scheme", CAESAR, "Crypto scheme to be used for encryption")
 	flag.StringVar(&output, "output", "", "Where output will be directed")
 	flag.BoolVar(&decrypt, "decrypt", false, "Decrypt the input using specified scheme and key")
 	flag.IntVar(&key, "key", 0, "Key for encryption/decryption")
@@ -58,6 +58,7 @@ func main() {
 	app := &App{
 		in:  in,
 		out: out,
+		key: key,
 	}
 	cipher, err := parseScheme(scheme, *app)
 	if err != nil {

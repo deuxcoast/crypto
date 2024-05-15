@@ -17,11 +17,13 @@ type Caesar struct {
 	modulo int
 }
 
-func New(in io.Reader, out io.Writer) *Caesar {
+func New(in io.Reader, out io.Writer, shift int) *Caesar {
 	return &Caesar{
-		in:     in,
-		out:    out,
-		shift:  1,
+		in:    in,
+		out:   out,
+		shift: shift,
+		// range of ascii codes including all [A-Za-z] letters and major
+		// special characters, ranging from <space> to ~
 		modulo: 95,
 	}
 }

@@ -20,7 +20,7 @@ var cipherScheme = map[string]string{
 func parseScheme(cipher string, app App) (Scheme, error) {
 	switch cipher {
 	case CAESAR:
-		return caesar.New(app.in, app.out), nil
+		return caesar.New(app.in, app.out, app.key), nil
 	default:
 		return nil, errors.New(fmt.Sprintf("Scheme is not implemented: %s", cipher))
 	}
