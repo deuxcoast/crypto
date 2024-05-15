@@ -13,8 +13,10 @@ type Caesar struct {
 
 	// each letter will substituted  with the letter
 	// in position = letterPos + shift % modulo
-	shift  int
-	modulo int
+	shift     int
+	modulo    int
+	startChar int
+	endChar   int
 }
 
 func New(in io.Reader, out io.Writer, shift int) *Caesar {
@@ -24,7 +26,9 @@ func New(in io.Reader, out io.Writer, shift int) *Caesar {
 		shift: shift,
 		// range of ascii codes including all [A-Za-z] letters and major
 		// special characters, ranging from <space> to ~
-		modulo: 95,
+		modulo:    95,
+		startChar: 32,
+		endChar:   126,
 	}
 }
 
@@ -33,7 +37,7 @@ func (c *Caesar) Encrypt() error {
 	scanner.Split(bufio.ScanRunes)
 	for scanner.Scan() {
 		letterCode := scanner.Bytes()[0]
-		encryptedLetter := encryptCode(letterCode, c.shift, c.modulo)
+		encryptedLetter := c.encryptCode(letterCode)
 		fmt.Fprintf(c.out, encryptedLetter)
 	}
 	if err := scanner.Err(); err != nil {
@@ -42,8 +46,9 @@ func (c *Caesar) Encrypt() error {
 	return nil
 }
 
-func encryptCode(code byte, shift, mod int) string {
-	encryptedCode := code + byte(shift)%byte(mod)
+func (c *Caesar) encryptCode(code byte) string {
+	codeVal := code - byte(c.startChar)
+	encryptedCode := ((codeVal + byte(c.shift)) % byte(c.modulo)) + byte(c.startChar)
 	return string(encryptedCode)
 }
 
@@ -52,7 +57,7 @@ func (c *Caesar) Decrypt() error {
 	scanner.Split(bufio.ScanRunes)
 	for scanner.Scan() {
 		letterCode := scanner.Bytes()[0]
-		decryptedLetter := decryptCode(letterCode, c.shift, c.modulo)
+		decryptedLetter := c.decryptCode(letterCode)
 		fmt.Fprintf(c.out, decryptedLetter)
 	}
 	if err := scanner.Err(); err != nil {
@@ -61,7 +66,8 @@ func (c *Caesar) Decrypt() error {
 	return nil
 }
 
-func decryptCode(code byte, shift, mod int) string {
-	decryptedCode := code - byte(shift)%byte(mod)
+func (c *Caesar) decryptCode(code byte) string {
+	codeVal := code - byte(c.startChar)
+	decryptedCode := (codeVal-byte(c.shift))%byte(c.modulo) + byte(c.startChar)
 	return string(decryptedCode)
 }
