@@ -14,11 +14,11 @@ func TestEncrypt(t *testing.T) {
 	tests := []struct {
 		input string
 		key   int
-		want  []byte
+		want  string
 	}{
-		{input: "Hello, World!", key: 3, want: []byte("Khoor/#Zruog$")},
-		{input: "can you crack the code?", key: 1, want: []byte("dbo!zpv!dsbdl!uif!dpef@")},
-		{input: "aaa", key: 55, want: []byte("999")},
+		{input: "Hello, World!", key: 3, want: "Khoor/#Zruog$"},
+		{input: "can you crack the code?", key: 1, want: "dbo!zpv!dsbdl!uif!dpef@"},
+		{input: "aaa", key: 55, want: "999"},
 	}
 
 	for _, tc := range tests {
@@ -30,8 +30,8 @@ func TestEncrypt(t *testing.T) {
 			t.Errorf("Encrypt() error: %v", err)
 		}
 		output := out
-		if !cmp.Equal(output.Bytes(), tc.want) {
-			t.Errorf("Encrypt:\n\tEncrypting: %v\n\tGot:\t%v\n\tWant:\t%v", in, output.Bytes(), tc.want)
+		if !cmp.Equal(output.String(), tc.want) {
+			t.Errorf("Encrypt:\n\tEncrypting: %v\n\tGot:\t%v\n\tWant:\t%v", in, output.String(), tc.want)
 		}
 	}
 }
@@ -40,10 +40,10 @@ func TestDecrypt(t *testing.T) {
 	tests := []struct {
 		input string
 		key   int
-		want  []byte
+		want  string
 	}{
-		{input: "Khoor/#Zruog$", key: 3, want: []byte("Hello, World!")},
-		{input: "dbo!zpv!dsbdl!uif!dpef@", key: 1, want: []byte("can you crack the code?")},
+		{input: "Khoor/#Zruog$", key: 3, want: "Hello, World!"},
+		{input: "dbo!zpv!dsbdl!uif!dpef@", key: 1, want: "can you crack the code?"},
 	}
 
 	for _, tc := range tests {
@@ -57,8 +57,8 @@ func TestDecrypt(t *testing.T) {
 			t.Errorf("Decrypt() error: %v", err)
 		}
 		output := out
-		if !cmp.Equal(output.Bytes(), tc.want) {
-			t.Errorf("Decrypt:\n\tDecrypting: %v\n\tGot:\t%v\n\tWant:\t%v", in, output.Bytes(), tc.want)
+		if !cmp.Equal(output.String(), tc.want) {
+			t.Errorf("Decrypt:\n\tDecrypting: %v\n\tGot:\t%v\n\tWant:\t%v", in, output.String(), tc.want)
 		}
 	}
 }
